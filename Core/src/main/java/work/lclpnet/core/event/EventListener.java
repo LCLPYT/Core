@@ -1,12 +1,14 @@
 package work.lclpnet.core.event;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.mojang.brigadier.ParseResults;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FireBlock;
 import net.minecraft.command.CommandSource;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.network.play.client.CPlayerDiggingPacket.Action;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
@@ -68,7 +70,7 @@ public class EventListener {
 	}
 	
 	@SubscribeEvent
-	public void onSignEdit(SignChangeEvent e) {
+	public static void onSignEdit(SignChangeEvent e) {
 		PlayerEntity p = e.getPlayer();
 		if(!p.hasPermissionLevel(2)) return;
 		
@@ -76,17 +78,36 @@ public class EventListener {
 			e.setLine(i, ComponentHelper.convertCharStyleToComponentStyle(e.getLine(i).getUnformattedComponentText(), '&', TextFormatting.BLACK));
 	}
 	
+	private static List<PlayerEntity> breakingBlocks = new ArrayList<>();
+	
+	public static boolean isBreakingBlock(PlayerEntity player) {
+		return breakingBlocks.contains(player);
+	}
+	
+	private static void toggleBreaking(PlayerEntity player) {
+		if(isBreakingBlock(player)) breakingBlocks.remove(player);
+		else breakingBlocks.add(player);
+	}
+	
 	@SubscribeEvent
-	public void onFireExtinguish(PlayerInteractEvent.LeftClickBlock e) {
-		if(e.getAction() != Action.START_DESTROY_BLOCK) return;
+	public static void onFireExtinguish(PlayerInteractEvent.LeftClickBlock e) {
+		PlayerEntity player = e.getPlayer();
+		toggleBreaking(player);
+		
+		if(!isBreakingBlock(player)) return;
 		
 		BlockPos neighbour = e.getPos().add(e.getFace().getDirectionVec());
-		BlockState state = e.getPlayer().world.getBlockState(neighbour);
+		BlockState state = player.world.getBlockState(neighbour);
 		if(!(state.getBlock() instanceof FireBlock)) return;
 
-		PlayerFireExtinguishEvent event = new PlayerFireExtinguishEvent(e.getPlayer(), neighbour, e.getPos(), e.getFace());
+		PlayerFireExtinguishEvent event = new PlayerFireExtinguishEvent(player, neighbour, e.getPos(), e.getFace());
 		MinecraftForge.EVENT_BUS.post(event);
 		if(event.isCanceled()) e.setCanceled(true);
+	}
+	
+	@SubscribeEvent
+	public static void onFire(PlayerFireExtinguishEvent e) {
+		e.setCanceled(true);
 	}
 	
 	@SubscribeEvent

@@ -111,11 +111,12 @@ public class EventListener {
 	}
 	
 	@SubscribeEvent
-	public void onCMDEcho(CommandEvent e) {
+	public static void onCMDEcho(CommandEvent e) {
 		if(!Config.isCMDEcho()) return;
 		
 		ParseResults<CommandSource> parseResults = e.getParseResults();
-		StringTextComponent message = new StringTextComponent("> " + parseResults.getReader().getString().substring(1));
+		String input = parseResults.getReader().getString();
+		StringTextComponent message = new StringTextComponent("> " + (input.startsWith("/") ? input.substring(1) : input));
 		parseResults.getContext().getSource().sendFeedback(message, false);
 	}
 	

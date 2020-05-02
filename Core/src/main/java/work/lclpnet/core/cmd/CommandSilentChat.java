@@ -11,16 +11,22 @@ import work.lclpnet.core.Config;
 import work.lclpnet.core.Core;
 import work.lclpnet.core.util.ComponentSupplier.Substitute;
 
-public class CommandSilentChat {
+public class CommandSilentChat extends CommandBase{
 
-	static LiteralArgumentBuilder<CommandSource> command() {
-		return Commands.literal("silentchat")
+	public CommandSilentChat() {
+		super("silentchat");
+		addAlias("sc");
+	}
+	
+	@Override
+	protected LiteralArgumentBuilder<CommandSource> transform(LiteralArgumentBuilder<CommandSource> builder) {
+		return builder
 				.requires(CoreCommands::permLevel2)
 				.executes(CommandSilentChat::status)
 				.then(Commands.argument("state", BoolArgumentType.bool())
 						.executes(CommandSilentChat::changeState));
 	}
-	
+
 	private static int status(CommandContext<CommandSource> c) {
 		Substitute subs = new Substitute(Config.isChatSilenced() ? "on" : "off", Config.isChatSilenced() ? TextFormatting.DARK_GREEN : TextFormatting.DARK_RED);
 		c.getSource().sendFeedback(Core.TEXT.complexMessage("Silent chat is currently %s.", TextFormatting.GRAY, subs), true);
@@ -35,5 +41,5 @@ public class CommandSilentChat {
 		c.getSource().sendFeedback(Core.TEXT.complexMessage("The chat is %s silenced.", TextFormatting.GRAY, subs), true);
 		return 0;
 	}
-	
+
 }

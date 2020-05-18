@@ -13,8 +13,8 @@ import net.minecraft.command.arguments.EntitySelector;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.text.TextFormatting;
 import work.lclpnet.core.Core;
-import work.lclpnet.core.util.ComponentSupplier.Substitute;
 import work.lclpnet.core.util.MessageType;
+import work.lclpnet.core.util.Substitute;
 
 public class CommandHeal extends CommandBase{
 

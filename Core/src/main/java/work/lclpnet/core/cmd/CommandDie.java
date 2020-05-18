@@ -19,7 +19,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.text.TextFormatting;
 import work.lclpnet.core.Core;
 import work.lclpnet.core.util.MessageType;
-import work.lclpnet.core.util.ComponentSupplier.Substitute;
+import work.lclpnet.core.util.Substitute;
 
 public class CommandDie extends CommandBase{
 

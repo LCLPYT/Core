@@ -20,6 +20,7 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.server.management.PlayerList;
 import work.lclpnet.core.Core;
 import work.lclpnet.core.util.PlayerProfile.TexturesProperty;
@@ -198,6 +199,19 @@ public class PlayerHelper {
 			e.printStackTrace();
 			return null;
 		}
+	}
+	
+	public static void setFlySpeed(ServerPlayerEntity p, float value) {
+		setSpeed(p, value, "flySpeed");
+	}
+	
+	public static void setWalkSpeed(ServerPlayerEntity p, float value) {
+		setSpeed(p, value, "walkSpeed");
+	}
+	
+	private static void setSpeed(ServerPlayerEntity p, float value, String field) {
+		ObjectHelper.set(p.abilities, field, value);
+		p.sendPlayerAbilities();
 	}
 	
 }

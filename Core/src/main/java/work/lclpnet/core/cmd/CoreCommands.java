@@ -23,6 +23,10 @@ public class CoreCommands {
 		new CommandHeal().register(dispatcher);
 		new CommandPing().register(dispatcher);
 		new CommandPlayerInfo().register(dispatcher);
+		new CommandRawSay().register(dispatcher);
+		new CommandRename().register(dispatcher);
+		new CommandSpeed().register(dispatcher);
+		new CommandSudo().register(dispatcher);
 	}
 
 	public static boolean permLevel1(CommandSource cs) {

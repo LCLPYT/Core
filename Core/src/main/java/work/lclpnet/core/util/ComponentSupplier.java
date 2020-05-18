@@ -78,22 +78,4 @@ public class ComponentSupplier {
 		
 	}
 	
-	public static class Substitute extends TextFormat{
-		private Object obj;
-		
-		public Substitute(Object obj, TextFormatting... format) {
-			super(format);
-			this.obj = obj;
-		}
-		
-		public Object getObj() {
-			return obj;
-		}
-		
-		public void setObj(Object obj) {
-			this.obj = obj;
-		}
-		
-	}
-	
 }

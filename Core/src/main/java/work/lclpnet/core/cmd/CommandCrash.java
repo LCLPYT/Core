@@ -13,9 +13,9 @@ import net.minecraft.network.play.server.SSpawnParticlePacket;
 import net.minecraft.particles.ParticleTypes;
 import net.minecraft.util.text.TextFormatting;
 import work.lclpnet.core.Core;
-import work.lclpnet.core.util.ComponentSupplier.Substitute;
 import work.lclpnet.core.util.LCLPConstants;
 import work.lclpnet.core.util.MessageType;
+import work.lclpnet.core.util.Substitute;
 
 public class CommandCrash extends CommandBase{
 

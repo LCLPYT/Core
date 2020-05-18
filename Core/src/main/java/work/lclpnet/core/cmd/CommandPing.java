@@ -11,8 +11,8 @@ import net.minecraft.command.arguments.EntitySelector;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.text.TextFormatting;
 import work.lclpnet.core.Core;
-import work.lclpnet.core.util.ComponentSupplier.Substitute;
 import work.lclpnet.core.util.MessageType;
+import work.lclpnet.core.util.Substitute;
 
 public class CommandPing extends CommandBase{
 
@@ -43,7 +43,7 @@ public class CommandPing extends CommandBase{
 		ServerPlayerEntity target = selector.selectOnePlayer(ctx.getSource());
 		if(target == null) return 1;
 		
-		ctx.getSource().sendFeedback(Core.TEXT.complexMessage("%s's Ping: %s", TextFormatting.GREEN, new Substitute(target.getName().getString()), new Substitute(target.ping + "ms", TextFormatting.YELLOW)), false);
+		ctx.getSource().sendFeedback(Core.TEXT.complexMessage("%s's Ping: %s", TextFormatting.GREEN, new Substitute(target.getName().getString(), TextFormatting.GREEN), new Substitute(target.ping + "ms", TextFormatting.YELLOW)), false);
 		
 		return 0;
 	}

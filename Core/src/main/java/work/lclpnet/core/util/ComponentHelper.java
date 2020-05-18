@@ -10,7 +10,6 @@ import java.util.regex.Pattern;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
-import work.lclpnet.core.util.ComponentSupplier.Substitute;
 import work.lclpnet.core.util.ComponentSupplier.TextFormat;
 
 public class ComponentHelper {
@@ -62,9 +61,15 @@ public class ComponentHelper {
 		for(String s : split) {
 			components.add(tf.apply(new StringTextComponent(s)));
 			if(i < matches.size() && i < substitutes.length) {
-				String formatted = String.format(matches.get(i), substitutes[i].getObj());
-				ITextComponent c = substitutes[i].apply(new StringTextComponent(formatted));
-				components.add(c);
+				if(substitutes[i].getObj() instanceof ITextComponent) {
+					ITextComponent itc = (ITextComponent) substitutes[i].getObj();
+					if(itc.getUnformattedComponentText().equals(itc.getFormattedText())) itc.applyTextStyles(substitutes[i].getFormat());
+					components.add(itc);
+				} else {
+					String formatted = String.format(matches.get(i), substitutes[i].getObj());
+					ITextComponent c = (substitutes[i].getFormat().length <= 0 ? tf : substitutes[i]).apply(new StringTextComponent(formatted));
+					components.add(c);
+				}
 			}
 			i++;
 		}
@@ -81,26 +86,26 @@ public class ComponentHelper {
 	public static ITextComponent convertCharStyleToComponentStyle(String text) {
 		return convertCharStyleToComponentStyle(text, COLOR_CHAR);
 	}
-	
+
 	public static ITextComponent convertCharStyleToComponentStyle(String text, char colorChar) {
 		return convertCharStyleToComponentStyle(text, colorChar, TextFormatting.WHITE);
 	}
-	
+
 	public static ITextComponent convertCharStyleToComponentStyle(String text, char colorChar, TextFormatting defaultColor) {
 		String regex = "(?i)" + CharacterHelper.getJavaUnicodeCode(colorChar) + "[0-9A-FK-OR]";
 		String[] textParts = text.split(regex);
-		
+
 		List<String> styles = new ArrayList<>();
 		Pattern p = Pattern.compile(regex);
 		Matcher m = p.matcher(text);
 		while(m.find()) 
 			styles.add(m.group());
-		
+
 		StringTextComponent root = null;
 		List<TextFormatting> formattings = null;
 		for (int i = 0; i < textParts.length; i++) {
 			String tp = textParts[i];
-			
+
 			if(formattings == null) formattings = new ArrayList<>();
 			else {
 				String controlString = styles.get(i - 1);
@@ -108,9 +113,9 @@ public class ComponentHelper {
 				TextFormatting format = getFormattingByFormattingChar(formatCode);
 				if(format != null) formattings.add(format);
 			}
-			
+
 			if(tp.isEmpty()) continue;
-			
+
 			if(root == null) {
 				root = new StringTextComponent(tp);
 				for(TextFormatting formatting : formattings) {
@@ -129,7 +134,7 @@ public class ComponentHelper {
 				root.appendSibling(stc);
 			}
 		}
-		
+
 		return root;
 	}
 
@@ -154,5 +159,5 @@ public class ComponentHelper {
 			return 0;
 		}
 	}
-	
+
 }

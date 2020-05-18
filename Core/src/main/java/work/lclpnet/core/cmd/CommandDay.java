@@ -16,8 +16,8 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
 import net.minecraft.world.dimension.DimensionType;
 import work.lclpnet.core.Core;
-import work.lclpnet.core.util.ComponentSupplier.Substitute;
 import work.lclpnet.core.util.MessageType;
+import work.lclpnet.core.util.Substitute;
 
 public class CommandDay extends CommandBase{
 

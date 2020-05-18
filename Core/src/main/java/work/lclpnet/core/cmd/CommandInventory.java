@@ -20,8 +20,8 @@ import net.minecraft.inventory.container.SimpleNamedContainerProvider;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import work.lclpnet.core.Core;
-import work.lclpnet.core.util.ComponentSupplier.Substitute;
 import work.lclpnet.core.util.MessageType;
+import work.lclpnet.core.util.Substitute;
 
 public class CommandInventory extends CommandBase{
 

@@ -13,6 +13,8 @@ import net.minecraft.command.Commands;
 import net.minecraft.command.arguments.EntityArgument;
 import net.minecraft.command.arguments.EntitySelector;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.IAttribute;
+import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
@@ -35,25 +37,25 @@ public class CommandPlayerInfo extends CommandBase{
 				.then(Commands.argument("target", EntityArgument.player())
 						.executes(this::infoOther));
 	}
-	
+
 	public int infoSelf(CommandContext<CommandSource> ctx) throws CommandSyntaxException {
 		if(!CoreCommands.isPlayer(ctx.getSource())) {
 			ctx.getSource().sendErrorMessage(Core.TEXT.message("Non-players have to specify a target! e.g. /playerinfo <name>", MessageType.ERROR));
 			return 1;
 		}
-		
+
 		info(ctx.getSource(), ctx.getSource().asPlayer());
-		
+
 		return 0;
 	}
-	
+
 	public int infoOther(CommandContext<CommandSource> ctx) throws CommandSyntaxException {
 		EntitySelector selector = ctx.getArgument("target", EntitySelector.class);
 		ServerPlayerEntity target = selector.selectOnePlayer(ctx.getSource());
 		if(target == null) return 1;
-		
+
 		info(ctx.getSource(), target);
-		
+
 		return 0;
 	}
 
@@ -63,7 +65,7 @@ public class CommandPlayerInfo extends CommandBase{
 		msg(source, "UUID", target.getUniqueID().toString());
 		msg(source, "IP-ADRESS", ((InetSocketAddress) target.connection.getNetworkManager().getRemoteAddress()).getHostString());
 		msg(source, "LANGUAGE", (String) ObjectHelper.get(target, "language"));
-		
+
 		msg(source, "STATUS", null);
 		msg(source, "GAMEMODE", target.interactionManager.getGameType().name());
 		msg(source, "HEALTH", String.format("%.2f", target.getHealth()));
@@ -77,17 +79,22 @@ public class CommandPlayerInfo extends CommandBase{
 		msg(source, "FLYSPEED", target.abilities.getFlySpeed());
 		msg(source, "DIMENSION", target.world.getDimension().getType().getRegistryName().toString());
 		msg(source, "INVULNERABLE", target.abilities.disableDamage);
-		
+
 		msg(source, "ATTRIBUTES", null);
-		msg(source, "ATTACK-SPEED", target.getAttribute(SharedMonsterAttributes.ATTACK_SPEED).getValue());
-		msg(source, "ARMOR", target.getAttribute(SharedMonsterAttributes.ARMOR).getValue());
-		msg(source, "ARMOR-TOUGHNESS", target.getAttribute(SharedMonsterAttributes.ARMOR_TOUGHNESS).getValue());
-		msg(source, "ATTACK-DAMAGE", target.getAttribute(SharedMonsterAttributes.ATTACK_DAMAGE).getValue());
-		msg(source, "KNOCKBACK-RESISTANCE", target.getAttribute(SharedMonsterAttributes.KNOCKBACK_RESISTANCE).getValue());
-		msg(source, "ATTACK-KNOCKBACK", target.getAttribute(SharedMonsterAttributes.ATTACK_KNOCKBACK).getValue());
-		msg(source, "FOLLOW-RANGE", target.getAttribute(SharedMonsterAttributes.FOLLOW_RANGE).getValue());
-		msg(source, "LUCK", target.getAttribute(SharedMonsterAttributes.LUCK).getValue());
-		msg(source, "MAX-HEALTH", target.getAttribute(SharedMonsterAttributes.MAX_HEALTH).getValue());
+		attr(source, "ATTACK-SPEED", target, SharedMonsterAttributes.ATTACK_SPEED);
+		attr(source, "ARMOR", target, SharedMonsterAttributes.ARMOR);
+		attr(source, "ARMOR-TOUGHNESS", target, SharedMonsterAttributes.ARMOR_TOUGHNESS);
+		attr(source, "ATTACK-DAMAGE", target, SharedMonsterAttributes.ATTACK_DAMAGE);
+		attr(source, "KNOCKBACK-RESISTANCE", target, SharedMonsterAttributes.KNOCKBACK_RESISTANCE);
+		attr(source, "LUCK", target, SharedMonsterAttributes.LUCK);
+		attr(source, "MAX-HEALTH", target, SharedMonsterAttributes.MAX_HEALTH);
+		attr(source, "MOVEMENT-SPEED", target, SharedMonsterAttributes.MOVEMENT_SPEED);
+		attr(source, "FLYING-SPEED", target, SharedMonsterAttributes.FLYING_SPEED);
+	}
+
+	private void attr(CommandSource source, String category, ServerPlayerEntity target, IAttribute attr) {
+		IAttributeInstance attribute = target.getAttribute(attr);
+		if(attribute != null) msg(source, category, attribute.getValue());
 	}
 
 	private void msg(CommandSource source, String category, @Nullable Object value) {

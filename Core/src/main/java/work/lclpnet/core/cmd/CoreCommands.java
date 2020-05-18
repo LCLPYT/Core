@@ -17,6 +17,12 @@ public class CoreCommands {
 		new CommandCraft().register(dispatcher);
 		new CommandCrash().register(dispatcher);
 		new CommandDay().register(dispatcher);
+		new CommandNight().register(dispatcher);
+		new CommandDie().register(dispatcher);
+		new CommandFeed().register(dispatcher);
+		new CommandHeal().register(dispatcher);
+		new CommandPing().register(dispatcher);
+		new CommandPlayerInfo().register(dispatcher);
 	}
 
 	public static boolean permLevel1(CommandSource cs) {

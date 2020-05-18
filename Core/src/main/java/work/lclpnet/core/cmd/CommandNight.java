@@ -19,24 +19,24 @@ import work.lclpnet.core.Core;
 import work.lclpnet.core.util.ComponentSupplier.Substitute;
 import work.lclpnet.core.util.MessageType;
 
-public class CommandDay extends CommandBase{
+public class CommandNight extends CommandBase{
 
-	public CommandDay() {
-		super("day");
+	public CommandNight() {
+		super("night");
 	}
 
 	@Override
 	protected LiteralArgumentBuilder<CommandSource> transform(LiteralArgumentBuilder<CommandSource> builder) {
 		return builder
 				.requires(CoreCommands::permLevel2)
-				.executes(CommandDay::day)
+				.executes(CommandNight::night)
 				.then(Commands.argument("world", DimensionArgument.getDimension())
-						.executes(CommandDay::dayWorld));
+						.executes(CommandNight::nightWorld));
 	}
 	
-	private static int day(CommandContext<CommandSource> ctx) {
+	private static int night(CommandContext<CommandSource> ctx) {
 		if(!CoreCommands.isEntity(ctx.getSource())) {
-			ctx.getSource().sendErrorMessage(Core.TEXT.message("Non-Entities have to specify a worldname! e.g. /day minecraft:overworld", MessageType.ERROR));
+			ctx.getSource().sendErrorMessage(Core.TEXT.message("Non-Entities have to specify a worldname! e.g. /night minecraft:overworld", MessageType.ERROR));
 			return 1;
 		}
 		
@@ -47,7 +47,7 @@ public class CommandDay extends CommandBase{
 		return 0;
 	}
 
-	private static int dayWorld(CommandContext<CommandSource> ctx) {
+	private static int nightWorld(CommandContext<CommandSource> ctx) {
 		DimensionType dim = DimensionArgument.getDimensionArgument(ctx, "world");
 		if(dim == null) return 1;
 		
@@ -56,14 +56,14 @@ public class CommandDay extends CommandBase{
 		
 		setTime(w, null);
 		
-		ctx.getSource().sendFeedback(Core.TEXT.message("Set the time in world " + w.getWorldInfo().getWorldName() + " to day.", MessageType.SUCCESS), false);
+		ctx.getSource().sendFeedback(Core.TEXT.message("Set the time in world " + w.getWorldInfo().getWorldName() + " to night.", MessageType.SUCCESS), false);
 		return 0;
 	}
 	
 	private static void setTime(World world, @Nullable Entity en) {
-		world.setDayTime(6000L);
+		world.setDayTime(16000L);
 		
-		final ITextComponent msg = Core.TEXT.complexMessage("%s has set the time to day.", TextFormatting.GREEN, 
+		final ITextComponent msg = Core.TEXT.complexMessage("%s has set the time to night.", TextFormatting.GREEN, 
 				new Substitute(en != null ? en.getDisplayName().getString() : "Console", TextFormatting.YELLOW));
 		
 		world.getPlayers().forEach(p -> {

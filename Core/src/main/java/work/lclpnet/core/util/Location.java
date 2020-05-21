@@ -9,8 +9,12 @@ public class Location extends Vec3d{
 	public final World world;
 	
 	public Location(Location other) {
-		super(other.x, other.y, other.z);
-		this.world = other.world;
+		this(other.world, other);
+	}
+	
+	public Location(World worldIn, Vec3d vecIn) {
+		super(vecIn.x, vecIn.y, vecIn.z);
+		this.world = worldIn;
 	}
 	
 	public Location(World worldIn, double xIn, double yIn, double zIn) {

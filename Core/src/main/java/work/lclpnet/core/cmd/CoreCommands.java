@@ -28,6 +28,7 @@ public class CoreCommands {
 		new CommandSpeed().register(dispatcher);
 		new CommandSudo().register(dispatcher);
 		new CommandWorldSpawnTp().register(dispatcher);
+		new CommandFly().register(dispatcher);
 	}
 
 	public static boolean permLevel1(CommandSource cs) {

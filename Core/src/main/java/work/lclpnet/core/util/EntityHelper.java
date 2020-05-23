@@ -19,14 +19,14 @@ public class EntityHelper {
 	public static void teleport(Entity entityIn, ServerWorld worldIn, double x, double y, double z, float yaw, float pitch) {
 		teleport(entityIn, worldIn, x, y, z, EnumSet.noneOf(SPlayerPositionLookPacket.Flags.class), yaw, pitch);
 	}
-	
+
 	public static void teleport(Entity entityIn, ServerWorld worldIn, double x, double y, double z, Set<SPlayerPositionLookPacket.Flags> relativeList, float yaw, float pitch) {
 		if (entityIn instanceof ServerPlayerEntity) {
 			ChunkPos chunkpos = new ChunkPos(new BlockPos(x, y, z));
 			worldIn.getChunkProvider().registerTicket(TicketType.POST_TELEPORT, chunkpos, 1, entityIn.getEntityId());
 			entityIn.stopRiding();
 			if (((ServerPlayerEntity) entityIn).isSleeping()) {
-				((ServerPlayerEntity)entityIn).func_225652_a_(true, true);
+				((ServerPlayerEntity)entityIn).wakeUp();
 			}
 
 			if (worldIn == entityIn.world) {
@@ -55,7 +55,7 @@ public class EntityHelper {
 				entityIn.copyDataFromOld(entity);
 				entityIn.setLocationAndAngles(x, y, z, f1, f);
 				entityIn.setRotationYawHead(f1);
-				worldIn.func_217460_e(entityIn);
+				addFromOtherDimension(worldIn, entityIn);
 			}
 		}
 
@@ -65,10 +65,18 @@ public class EntityHelper {
 		}
 	}
 
+	public static void addFromOtherDimension(ServerWorld w, Entity entity) {
+		boolean flag = entity.forceSpawn;
+		entity.forceSpawn = true;
+		w.summonEntity(entity);
+		entity.forceSpawn = flag;
+		w.chunkCheck(entity);
+	}
+
 	public static void teleportToEntity(Collection<? extends Entity> targets, Entity destination) {
 		targets.forEach(e -> teleportToEntity(e, destination));
 	}
-	
+
 	public static void teleportToEntity(Entity which, Entity destination) {
 		teleport(which, (ServerWorld) destination.world, destination.getPosX(), destination.getPosY(), destination.getPosZ(), EnumSet.noneOf(SPlayerPositionLookPacket.Flags.class), destination.rotationYaw, destination.rotationPitch);
 	}

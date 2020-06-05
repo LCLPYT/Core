@@ -1,7 +1,7 @@
 package work.lclpnet.core.scheduler;
 
-import work.lclpnet.core.Core;
 import work.lclpnet.core.scheduler.SchedulerSystem.AsyncSchedulerSystem;
+import work.lclpnet.corebase.CoreBase;
 
 public class Schedulers {
 
@@ -20,7 +20,7 @@ public class Schedulers {
 		if(sched == null) return;
 		
 		new Thread(() -> {
-			while(Core.active) {
+			while(CoreBase.active) {
 				try {
 					Thread.sleep(50L);
 					if(sched.tick()) return;

@@ -3,7 +3,7 @@ package work.lclpnet.core.scheduler;
 import java.util.ArrayList;
 import java.util.List;
 
-import work.lclpnet.core.Core;
+import work.lclpnet.corebase.CoreBase;
 
 public class SchedulerSystem {
 
@@ -56,7 +56,7 @@ public class SchedulerSystem {
 		private void startThread() {
 			if(thread != null) return;
 			thread = new Thread(() -> {
-				while(Core.active) {
+				while(CoreBase.active) {
 					try {
 						Thread.sleep(50L);
 						this.tick();

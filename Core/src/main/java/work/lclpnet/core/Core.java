@@ -3,7 +3,6 @@ package work.lclpnet.core;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.custom.ServerReloadedEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -26,8 +25,6 @@ public class Core {
 	public static final String MODID = "core";
 	private static final Logger LOGGER = LogManager.getLogger();
 	public static final ComponentSupplier TEXT = new ComponentSupplier("Core");
-	public static volatile boolean active = false;
-	private static MinecraftServer server = null;
 
 	public Core() {
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
@@ -49,20 +46,17 @@ public class Core {
 	@SubscribeEvent
 	public void onServerStarting(FMLServerStartingEvent e) {
 		LOGGER.info("Core starting...");
-		server = e.getServer();
 		CoreCommands.registerCommands(e.getCommandDispatcher());
 	}
 
 	@SubscribeEvent
 	public void onServerStarted(FMLServerStartedEvent e) {
 		LOGGER.info("Core started.");
-		active = true;
 	}
 	
 	@SubscribeEvent
 	public void onServerStop(FMLServerStoppingEvent e) {
 		LOGGER.info("Core stopping...");
-		active = false;
 	}
 	
 	@SubscribeEvent
@@ -77,10 +71,6 @@ public class Core {
 		Config.load();
 
 		LOGGER.info("Core reloaded.");
-	}
-	
-	public static MinecraftServer getServer() {
-		return server;
 	}
 	
 }

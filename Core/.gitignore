@@ -21,6 +21,7 @@ gradle.properties
 # other
 eclipse
 run
+libs
 mcmodsrepo
 
 # Files from Forge MDK

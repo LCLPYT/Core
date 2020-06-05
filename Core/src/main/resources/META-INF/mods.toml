@@ -15,6 +15,12 @@ authors="LCLP" #optional
     Internal Server mod.
     '''
     
+    [[dependencies.core]]
+        modId="corebase" #mandatory
+        mandatory=true #mandatory
+        versionRange="1.15.2-1.1.0-forge" #mandatory
+        ordering="BEFORE"
+        side="SERVER"
     [[dependencies.core]] #optional
         modId="forge" #mandatory
         mandatory=true #mandatory

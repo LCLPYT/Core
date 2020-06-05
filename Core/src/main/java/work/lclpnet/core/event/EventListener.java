@@ -28,8 +28,8 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import work.lclpnet.core.Config;
 import work.lclpnet.core.Core;
 import work.lclpnet.core.event.custom.PlayerFireExtinguishEvent;
-import work.lclpnet.core.util.ComponentHelper;
-import work.lclpnet.core.util.MessageType;
+import work.lclpnet.corebase.util.ComponentHelper;
+import work.lclpnet.corebase.util.MessageType;
 
 @EventBusSubscriber(modid = Core.MODID, bus = Bus.FORGE)
 public class EventListener {

@@ -14,7 +14,7 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '1.15.2-1.1.0-forge'
+version = '1.15.2-1.1.1-forge'
 group = 'work.lclpnet.core' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'core'
 
@@ -109,7 +109,10 @@ dependencies {
     // For more info...
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
+    
     compile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1'
+    
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
 }
 
 // Example for how to get properties into the manifest for reading by the runtime..

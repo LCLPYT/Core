@@ -20,8 +20,10 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import work.lclpnet.core.Core;
-import work.lclpnet.core.util.MessageType;
-import work.lclpnet.core.util.ObjectHelper;
+import work.lclpnet.corebase.cmd.CommandBase;
+import work.lclpnet.corebase.cmd.CoreCommands;
+import work.lclpnet.corebase.util.MessageType;
+import work.lclpnet.corebase.util.ObjectHelper;
 
 public class CommandPlayerInfo extends CommandBase{
 

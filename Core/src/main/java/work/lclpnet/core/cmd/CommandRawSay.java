@@ -8,7 +8,9 @@ import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
 import net.minecraft.util.text.ITextComponent;
 import work.lclpnet.core.Core;
-import work.lclpnet.core.util.ComponentHelper;
+import work.lclpnet.corebase.cmd.CommandBase;
+import work.lclpnet.corebase.util.ComponentHelper;
+import work.lclpnet.corebase.cmd.CoreCommands;
 
 public class CommandRawSay extends CommandBase {
 

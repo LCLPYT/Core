@@ -18,7 +18,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import work.lclpnet.core.cmd.CoreCommands;
 import work.lclpnet.core.event.EventListener;
 import work.lclpnet.core.event.SchedulerListener;
-import work.lclpnet.core.util.ComponentSupplier;
+import work.lclpnet.corebase.util.ComponentSupplier;
 
 @Mod(Core.MODID)
 public class Core {

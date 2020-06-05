@@ -15,8 +15,10 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.play.client.CChatMessagePacket;
 import net.minecraft.util.text.TextFormatting;
 import work.lclpnet.core.Core;
-import work.lclpnet.core.util.MessageType;
-import work.lclpnet.core.util.Substitute;
+import work.lclpnet.corebase.cmd.CommandBase;
+import work.lclpnet.corebase.cmd.CoreCommands;
+import work.lclpnet.corebase.util.MessageType;
+import work.lclpnet.corebase.util.Substitute;
 
 public class CommandSudo extends CommandBase{
 

@@ -9,7 +9,9 @@ import net.minecraft.command.Commands;
 import net.minecraft.util.text.TextFormatting;
 import work.lclpnet.core.Config;
 import work.lclpnet.core.Core;
-import work.lclpnet.core.util.Substitute;
+import work.lclpnet.corebase.cmd.CommandBase;
+import work.lclpnet.corebase.cmd.CoreCommands;
+import work.lclpnet.corebase.util.Substitute;
 
 public class CommandSilentChat extends CommandBase{
 

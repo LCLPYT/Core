@@ -13,6 +13,8 @@ import net.minecraft.inventory.container.SimpleNamedContainerProvider;
 import net.minecraft.inventory.container.WorkbenchContainer;
 import net.minecraft.util.IWorldPosCallable;
 import net.minecraft.util.text.TranslationTextComponent;
+import work.lclpnet.corebase.cmd.CommandBase;
+import work.lclpnet.corebase.cmd.CoreCommands;
 
 public class CommandCraft extends CommandBase{
 

@@ -1,0 +1,10 @@
+{
+    "homepage": "https://github.com/LCLPYT/Core/releases",
+    "promos": {
+        "1.15.2-latest": "1.2.0",
+        "1.15.2-recommended": "1.2.0"
+    },
+    "1.15.2": {
+        "1.2.0": "First Version.\nCoreBase and it's dependencies are required."
+    }
+}

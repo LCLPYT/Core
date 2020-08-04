@@ -18,7 +18,7 @@ authors="LCLP"
     [[dependencies.core]]
         modId="corebase"
         mandatory=true
-        versionRange="[1.3.0)"
+        versionRange="[1.3,)"
         ordering="BEFORE"
         side="SERVER"
     [[dependencies.core]] #optional

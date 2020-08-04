@@ -16,10 +16,6 @@ import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.CommandEvent;
 import net.minecraftforge.event.ServerChatEvent;
-import net.minecraftforge.event.bukkitlike.FoodLevelChangeEvent;
-import net.minecraftforge.event.bukkitlike.PlayerJoinEvent;
-import net.minecraftforge.event.bukkitlike.PlayerQuitEvent;
-import net.minecraftforge.event.bukkitlike.SignChangeEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent.FarmlandTrampleEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -28,9 +24,14 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import work.lclpnet.core.Config;
 import work.lclpnet.core.Core;
 import work.lclpnet.core.event.custom.PlayerFireExtinguishEvent;
+import work.lclpnet.corebase.event.custom.FoodLevelChangeEvent;
+import work.lclpnet.corebase.event.custom.PlayerJoinEvent;
+import work.lclpnet.corebase.event.custom.PlayerQuitEvent;
+import work.lclpnet.corebase.event.custom.SignChangeEvent;
 import work.lclpnet.corebase.util.ComponentHelper;
 import work.lclpnet.corebase.util.MessageType;
 
+@SuppressWarnings("deprecation")
 @EventBusSubscriber(modid = Core.MODID, bus = Bus.FORGE)
 public class EventListener {
 
@@ -52,7 +53,7 @@ public class EventListener {
 	}
 	
 	@SubscribeEvent
-	public static void onHungerChange(FoodLevelChangeEvent e) {
+	public static void onHungerChange(FoodLevelChangeEvent e) { //TODO FoodLevelChangeEvent still unimplemented.
 		if(Config.isNoHunger() && e.getToLevel() < e.getFromLevel()) e.setCanceled(true); 
 	}
 	

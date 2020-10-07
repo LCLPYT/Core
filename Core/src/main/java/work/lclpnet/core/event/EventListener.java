@@ -9,8 +9,9 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.FireBlock;
 import net.minecraft.command.CommandSource;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.MinecraftForge;
@@ -30,6 +31,7 @@ import work.lclpnet.corebase.event.custom.PlayerQuitEvent;
 import work.lclpnet.corebase.event.custom.SignChangeEvent;
 import work.lclpnet.corebase.util.ComponentHelper;
 import work.lclpnet.corebase.util.MessageType;
+import work.lclpnet.corebase.util.TextComponentHelper;
 
 @SuppressWarnings("deprecation")
 @EventBusSubscriber(modid = Core.MODID, bus = Bus.FORGE)
@@ -60,13 +62,13 @@ public class EventListener {
 	@SubscribeEvent
 	public static void onChat(ServerChatEvent e) {
 		if(e.getPlayer().hasPermissionLevel(2)) {
-			ITextComponent itc = ComponentHelper.convertCharStyleToComponentStyle(e.getMessage(), '&');
-			if(!e.getMessage().equals(itc.getFormattedText())) e.setComponent(itc);
+			IFormattableTextComponent itc = ComponentHelper.convertCharStyleToComponentStyle(e.getMessage(), '&');
+			if(TextComponentHelper.hasDeepFormatting(itc)) e.setComponent(itc);
 		}
 		
 		if(Config.isChatSilenced()) {
 			e.setCanceled(true);
-			e.getPlayer().sendMessage(Core.TEXT.message("The chat is silenced right now.", MessageType.ERROR));
+			e.getPlayer().sendMessage(Core.TEXT.message("The chat is silenced right now.", MessageType.ERROR), Util.field_240973_b_);
 		}
 	}
 	

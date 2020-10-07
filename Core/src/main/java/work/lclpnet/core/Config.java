@@ -12,50 +12,60 @@ import com.electronwill.nightconfig.core.file.FileConfig;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
+import work.lclpnet.corebase.util.TextComponentHelper;
 
 public class Config {
 
 	private static FileConfig config = null;
 	private static Map<String, Object> register = new HashMap<>();
-	
+
 	public static final String KEY_DISABLE_FARMLAND_TRAMPLING = "game.disable-farmland-trampling",
 			KEY_MESSAGE_JOIN = "messages.join",
 			KEY_MESSAGE_QUIT = "messages.quit",
 			KEY_NO_HUNGER = "game.no-hunger",
 			KEY_SILENCED_CHAT = "game.silenced-chat",
 			KEY_CMD_ECHO = "game.cmd-echo";
-	
+
 	static {
+		ITextComponent joinDefault = TextComponentHelper.appendSibling(
+				TextComponentHelper.applyTextStyle(new StringTextComponent("Join> "), TextFormatting.DARK_GRAY), 
+				TextComponentHelper.applyTextStyle(new StringTextComponent("%s"), TextFormatting.GRAY)
+				);
+		ITextComponent quitDefault = TextComponentHelper.appendSibling(
+				TextComponentHelper.applyTextStyle(new StringTextComponent("Quit> "), TextFormatting.DARK_GRAY), 
+				TextComponentHelper.applyTextStyle(new StringTextComponent("%s"), TextFormatting.GRAY)
+				);
+
 		register.put(KEY_DISABLE_FARMLAND_TRAMPLING, false);
-		register.put(KEY_MESSAGE_JOIN, ITextComponent.Serializer.toJson(new StringTextComponent("Join> ").applyTextStyle(TextFormatting.DARK_GRAY).appendSibling(new StringTextComponent("%s").applyTextStyle(TextFormatting.GRAY))));
-		register.put(KEY_MESSAGE_QUIT, ITextComponent.Serializer.toJson(new StringTextComponent("Quit> ").applyTextStyle(TextFormatting.DARK_GRAY).appendSibling(new StringTextComponent("%s").applyTextStyle(TextFormatting.GRAY))));
+		register.put(KEY_MESSAGE_JOIN, ITextComponent.Serializer.toJson(joinDefault));
+		register.put(KEY_MESSAGE_QUIT, ITextComponent.Serializer.toJson(quitDefault));
 		register.put(KEY_NO_HUNGER, false);
 		register.put(KEY_SILENCED_CHAT, false);
 		register.put(KEY_CMD_ECHO, true);
 	}
-	
+
 	public static void load() {
 		File configDir = new File("config");
 		File configFile = new File(configDir, "core.toml");
-		
+
 		if(!configFile.exists()) createConfigFile(configFile);
 		config = FileConfig.builder(configFile).build();
 		config.load();
 		config.close();
-		
+
 		populateConfig();
 	}
-	
+
 	private static void populateConfig() {
 		Holder<Boolean> modified = new Holder<>(false);
-		
+
 		register.forEach((path, defaultValue) -> {
 			if(!config.contains(path)) {
 				config.set(path, defaultValue);
 				if(!modified.value) modified.value = true;
 			}
 		});
-		
+
 		if(modified.value) save();
 	}
 
@@ -73,12 +83,12 @@ public class Config {
 	public static FileConfig getConfig() {
 		return config;
 	}
-	
+
 	private static void set(String path, Object val) {
 		config.set(path, val);
 		save();
 	}
-	
+
 	private static <T> T get(String path) {
 		if(!config.contains(path)) {
 			if(!register.containsKey(path)) throw new IllegalStateException("Path not registered.");
@@ -95,55 +105,55 @@ public class Config {
 			newConfig.close();
 		}, "Config Saver").run(); 
 	}
-	
+
 	public static boolean isFarmlandTramplingDisabled() {
 		return get(KEY_DISABLE_FARMLAND_TRAMPLING);
 	}
-	
+
 	public static String getJoinMessage() {
 		return get(KEY_MESSAGE_JOIN);
 	}
-	
+
 	public static String getQuitMessage() {
 		return get(KEY_MESSAGE_QUIT);
 	}
-	
+
 	public static boolean isNoHunger() {
 		return get(KEY_NO_HUNGER);
 	}
-	
+
 	public static void setNoHunger(boolean state) {
 		set(KEY_NO_HUNGER, state);
 	}
-	
+
 	public static boolean isChatSilenced() {
 		return get(KEY_SILENCED_CHAT);
 	}
-	
+
 	public static void setChatSilenced(boolean state) {
 		set(KEY_SILENCED_CHAT, state);
 	}
-	
+
 	public static boolean isCMDEcho() {
 		return get(KEY_CMD_ECHO);
 	}
-	
+
 	public static void setCMDEcho(boolean state) {
 		set(KEY_CMD_ECHO, state);
 	}
-	
+
 	public static ITextComponent getJoinMessageComponent(String name) {
 		String string = getJoinMessage();
 		if(string == null) return null;
-		
-		return ITextComponent.Serializer.fromJson(String.format(string, name));
+
+		return ITextComponent.Serializer.func_240643_a_(String.format(string, name));
 	}
-	
+
 	public static ITextComponent getQuitMessageComponent(String name) {
 		String string = getQuitMessage();
 		if(string == null) return null;
-		
-		return ITextComponent.Serializer.fromJson(String.format(string, name));
+
+		return ITextComponent.Serializer.func_240643_a_(String.format(string, name));
 	}
 
 }

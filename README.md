@@ -11,3 +11,5 @@ Depends on <a href="https://github.com/LCLPYT/CoreBase">CoreBase</a>.
 3. Execute the gradle build task: `./gradlew build` (make sure you are using JDK 8)
 
 The deobfuscated jar file will be located in the `build/libs` directory along with the obfuscated jar file and the sources jar file.
+
+You may also need to adjust the mapping version in the build.gradle to your mod's build.gradle mapping version. The resulting compilation errors (method name changes) then have to be resolved before building.

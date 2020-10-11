@@ -12,7 +12,6 @@ import com.electronwill.nightconfig.core.file.FileConfig;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
-import work.lclpnet.corebase.util.TextComponentHelper;
 
 public class Config {
 
@@ -27,14 +26,10 @@ public class Config {
 			KEY_CMD_ECHO = "game.cmd-echo";
 
 	static {
-		ITextComponent joinDefault = TextComponentHelper.appendSibling(
-				TextComponentHelper.applyTextStyle(new StringTextComponent("Join> "), TextFormatting.DARK_GRAY), 
-				TextComponentHelper.applyTextStyle(new StringTextComponent("%s"), TextFormatting.GRAY)
-				);
-		ITextComponent quitDefault = TextComponentHelper.appendSibling(
-				TextComponentHelper.applyTextStyle(new StringTextComponent("Quit> "), TextFormatting.DARK_GRAY), 
-				TextComponentHelper.applyTextStyle(new StringTextComponent("%s"), TextFormatting.GRAY)
-				);
+		ITextComponent joinDefault = new StringTextComponent("Join> ").mergeStyle(TextFormatting.DARK_GRAY)
+				.append(new StringTextComponent("%s").mergeStyle(TextFormatting.GRAY));
+		ITextComponent quitDefault = new StringTextComponent("Quit> ").mergeStyle(TextFormatting.DARK_GRAY)
+				.append(new StringTextComponent("%s").mergeStyle(TextFormatting.GRAY));
 
 		register.put(KEY_DISABLE_FARMLAND_TRAMPLING, false);
 		register.put(KEY_MESSAGE_JOIN, ITextComponent.Serializer.toJson(joinDefault));
@@ -146,14 +141,14 @@ public class Config {
 		String string = getJoinMessage();
 		if(string == null) return null;
 
-		return ITextComponent.Serializer.func_240643_a_(String.format(string, name));
+		return ITextComponent.Serializer.getComponentFromJson(String.format(string, name));
 	}
 
 	public static ITextComponent getQuitMessageComponent(String name) {
 		String string = getQuitMessage();
 		if(string == null) return null;
 
-		return ITextComponent.Serializer.func_240643_a_(String.format(string, name));
+		return ITextComponent.Serializer.getComponentFromJson(String.format(string, name));
 	}
 
 }

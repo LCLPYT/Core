@@ -12,8 +12,10 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.IFormattableTextComponent;
+import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.CommandEvent;
 import net.minecraftforge.event.ServerChatEvent;
@@ -42,63 +44,76 @@ public class EventListener {
 		PlayerEntity p = e.getPlayer();
 		e.setJoinMessage(Config.getJoinMessageComponent(p.getName().getString()));
 	}
-	
+
 	@SubscribeEvent
 	public static void onQuit(PlayerQuitEvent e) {
 		PlayerEntity p = e.getPlayer();
 		e.setQuitMessage(Config.getQuitMessageComponent(p.getName().getString()));
 	}
-	
+
 	@SubscribeEvent
 	public static void onTrample(FarmlandTrampleEvent e) {
 		if(Config.isFarmlandTramplingDisabled()) e.setCanceled(true);
 	}
-	
+
 	@SubscribeEvent
 	public static void onHungerChange(FoodLevelChangeEvent e) { //TODO FoodLevelChangeEvent still unimplemented.
 		if(Config.isNoHunger() && e.getToLevel() < e.getFromLevel()) e.setCanceled(true); 
 	}
-	
+
 	@SubscribeEvent
 	public static void onChat(ServerChatEvent e) {
 		if(e.getPlayer().hasPermissionLevel(2)) {
 			IFormattableTextComponent itc = ComponentHelper.convertCharStyleToComponentStyle(e.getMessage(), '&');
-			if(TextComponentHelper.hasDeepFormatting(itc)) e.setComponent(itc);
+			System.out.println(itc);
+			if(TextComponentHelper.hasDeepFormatting(itc)) {
+				System.out.println("HAS FORMATTING");
+				boolean modDirectly = false;
+				if(e.getComponent() instanceof TranslationTextComponent) {
+					TranslationTextComponent ttc = (TranslationTextComponent) e.getComponent();
+					if(ttc.formatArgs.length == 2 && ttc.formatArgs[1] instanceof ITextComponent) {
+						modDirectly = true;
+						ttc.formatArgs[1] = itc;
+					}
+				}
+
+				if(!modDirectly) e.setComponent(itc);
+			}
 		}
-		
+
 		if(Config.isChatSilenced()) {
 			e.setCanceled(true);
-			e.getPlayer().sendMessage(Core.TEXT.message("The chat is silenced right now.", MessageType.ERROR), Util.field_240973_b_);
+			e.getPlayer().sendMessage(Core.TEXT.message("The chat is silenced right now.", MessageType.ERROR), Util.DUMMY_UUID);
 		}
 	}
-	
+
 	@SubscribeEvent
 	public static void onSignEdit(SignChangeEvent e) {
 		PlayerEntity p = e.getPlayer();
 		if(!p.hasPermissionLevel(2)) return;
-		
+
 		for (int i = 0; i < e.getLines().length; i++) 
 			e.setLine(i, ComponentHelper.convertCharStyleToComponentStyle(e.getLine(i).getUnformattedComponentText(), '&', TextFormatting.BLACK));
 	}
-	
+
 	private static List<PlayerEntity> breakingBlocks = new ArrayList<>();
-	
+
 	public static boolean isBreakingBlock(PlayerEntity player) {
 		return breakingBlocks.contains(player);
 	}
-	
+
 	private static void toggleBreaking(PlayerEntity player) {
 		if(isBreakingBlock(player)) breakingBlocks.remove(player);
 		else breakingBlocks.add(player);
 	}
-	
+
 	@SubscribeEvent
 	public static void onFireExtinguish(PlayerInteractEvent.LeftClickBlock e) {
 		PlayerEntity player = e.getPlayer();
 		toggleBreaking(player);
-		
+
 		if(!isBreakingBlock(player)) return;
-		
+
 		BlockPos neighbour = e.getPos().add(e.getFace().getDirectionVec());
 		BlockState state = player.world.getBlockState(neighbour);
 		if(!(state.getBlock() instanceof FireBlock)) return;
@@ -107,20 +122,20 @@ public class EventListener {
 		MinecraftForge.EVENT_BUS.post(event);
 		if(event.isCanceled()) e.setCanceled(true);
 	}
-	
+
 	@SubscribeEvent
 	public static void onFire(PlayerFireExtinguishEvent e) {
 		e.setCanceled(true);
 	}
-	
+
 	@SubscribeEvent
 	public static void onCMDEcho(CommandEvent e) {
 		if(!Config.isCMDEcho()) return;
-		
+
 		ParseResults<CommandSource> parseResults = e.getParseResults();
 		String input = parseResults.getReader().getString();
 		StringTextComponent message = new StringTextComponent("> " + (input.startsWith("/") ? input.substring(1) : input));
 		parseResults.getContext().getSource().sendFeedback(message, false);
 	}
-	
+
 }

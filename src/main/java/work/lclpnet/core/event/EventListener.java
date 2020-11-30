@@ -35,7 +35,6 @@ import work.lclpnet.corebase.util.ComponentHelper;
 import work.lclpnet.corebase.util.MessageType;
 import work.lclpnet.corebase.util.TextComponentHelper;
 
-@SuppressWarnings("deprecation")
 @EventBusSubscriber(modid = Core.MODID, bus = Bus.FORGE)
 public class EventListener {
 
@@ -57,10 +56,10 @@ public class EventListener {
 	}
 
 	@SubscribeEvent
-	public static void onHungerChange(FoodLevelChangeEvent e) { //TODO FoodLevelChangeEvent still unimplemented.
+	public static void onHungerChange(FoodLevelChangeEvent e) {
 		if(Config.isNoHunger() && e.getToLevel() < e.getFromLevel()) e.setCanceled(true); 
 	}
-
+	
 	@SubscribeEvent
 	public static void onChat(ServerChatEvent e) {
 		if(e.getPlayer().hasPermissionLevel(2)) {

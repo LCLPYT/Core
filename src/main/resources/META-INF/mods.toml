@@ -9,7 +9,7 @@ license="MIT"
     modId="core"
     version="${version}"
     displayName="Core"
-    updateJSONURL="https://raw.githubusercontent.com/LCLPYT/Core/master/Core/update.json"
+    updateJSONURL="https://raw.githubusercontent.com/LCLPYT/Core/master/update.json"
     logoFile="logo.png"
     credits="LCLPNetwork!"
     description='''
@@ -19,7 +19,7 @@ license="MIT"
     [[dependencies.core]]
         modId="corebase"
         mandatory=true
-        versionRange="[1.4,)"
+        versionRange="[1.5,)"
         ordering="BEFORE"
         side="SERVER"
     [[dependencies.core]]

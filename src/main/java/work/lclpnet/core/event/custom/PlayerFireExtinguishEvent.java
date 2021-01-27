@@ -12,22 +12,17 @@ import net.minecraftforge.eventbus.api.Cancelable;
 @Cancelable
 public class PlayerFireExtinguishEvent extends PlayerEvent{
 
-	protected BlockPos fireBlock, punchedBlock;
+	protected BlockPos fireBlock;
 	protected Direction clickedBlockFace;
 	
-	public PlayerFireExtinguishEvent(PlayerEntity player, BlockPos fireBlock, BlockPos punchedBlock, Direction blockFace) {
+	public PlayerFireExtinguishEvent(PlayerEntity player, BlockPos fireBlock, Direction blockFace) {
 		super(player);
 		this.fireBlock = fireBlock;
-		this.punchedBlock = punchedBlock;
 		this.clickedBlockFace = blockFace;
 	}
 	
 	public BlockPos getFireBlock() {
 		return fireBlock;
-	}
-	
-	public BlockPos getPunchedBlock() {
-		return punchedBlock;
 	}
 	
 	public Direction getClickedBlockFace() {

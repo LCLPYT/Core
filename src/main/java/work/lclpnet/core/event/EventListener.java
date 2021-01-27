@@ -1,8 +1,5 @@
 package work.lclpnet.core.event;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.mojang.brigadier.ParseResults;
 
 import net.minecraft.block.BlockState;
@@ -10,7 +7,6 @@ import net.minecraft.block.FireBlock;
 import net.minecraft.command.CommandSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Util;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.IFormattableTextComponent;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
@@ -64,9 +60,7 @@ public class EventListener {
 	public static void onChat(ServerChatEvent e) {
 		if(e.getPlayer().hasPermissionLevel(2)) {
 			IFormattableTextComponent itc = ComponentHelper.convertCharStyleToComponentStyle(e.getMessage(), '&');
-			System.out.println(itc);
 			if(TextComponentHelper.hasDeepFormatting(itc)) {
-				System.out.println("HAS FORMATTING");
 				boolean modDirectly = false;
 				if(e.getComponent() instanceof TranslationTextComponent) {
 					TranslationTextComponent ttc = (TranslationTextComponent) e.getComponent();
@@ -91,40 +85,20 @@ public class EventListener {
 		PlayerEntity p = e.getPlayer();
 		if(!p.hasPermissionLevel(2)) return;
 
-		for (int i = 0; i < e.getLines().length; i++) 
-			e.setLine(i, ComponentHelper.convertCharStyleToComponentStyle(e.getLine(i).getUnformattedComponentText(), '&', TextFormatting.BLACK));
-	}
-
-	private static List<PlayerEntity> breakingBlocks = new ArrayList<>();
-
-	public static boolean isBreakingBlock(PlayerEntity player) {
-		return breakingBlocks.contains(player);
-	}
-
-	private static void toggleBreaking(PlayerEntity player) {
-		if(isBreakingBlock(player)) breakingBlocks.remove(player);
-		else breakingBlocks.add(player);
+		for (int i = 0; i < e.getLines().size(); i++) 
+			e.setComponentLine(i, ComponentHelper.convertCharStyleToComponentStyle(e.getLine(i), '&', TextFormatting.BLACK));
 	}
 
 	@SubscribeEvent
 	public static void onFireExtinguish(PlayerInteractEvent.LeftClickBlock e) {
 		PlayerEntity player = e.getPlayer();
-		toggleBreaking(player);
 
-		if(!isBreakingBlock(player)) return;
-
-		BlockPos neighbour = e.getPos().add(e.getFace().getDirectionVec());
-		BlockState state = player.world.getBlockState(neighbour);
+		BlockState state = player.world.getBlockState(e.getPos());
 		if(!(state.getBlock() instanceof FireBlock)) return;
 
-		PlayerFireExtinguishEvent event = new PlayerFireExtinguishEvent(player, neighbour, e.getPos(), e.getFace());
+		PlayerFireExtinguishEvent event = new PlayerFireExtinguishEvent(player, e.getPos(), e.getFace());
 		MinecraftForge.EVENT_BUS.post(event);
 		if(event.isCanceled()) e.setCanceled(true);
-	}
-
-	@SubscribeEvent
-	public static void onFire(PlayerFireExtinguishEvent e) {
-		e.setCanceled(true);
 	}
 
 	@SubscribeEvent

@@ -6,7 +6,7 @@
         "1.16.3-latest": "1.4.4",
         "1.16.3-recommended": "1.4.4",
         "1.16.4-latest": "1.5.0",
-        "1.16.4-recommended": "1.5.0"
+        "1.16.4-recommended": "1.5.2"
     },
     "1.15.2": {
         "1.2.0": "First Version.\nCoreBase and it's dependencies are required."
@@ -17,6 +17,6 @@
         "1.4.4": "Restructure"
     },
     "1.16.4": {
-        "1.5.0": "Fire extinguish event fixed, compatible with 1.16.4"
+        "1.5.2": "Fire extinguish event fixed, compatible with 1.16.4"
     }
 }

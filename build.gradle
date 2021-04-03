@@ -127,7 +127,7 @@ repositories {
 
 dependencies {
     minecraft "net.minecraftforge:forge:${project.property('mc_version')}-${project.property('forge_version')}"
-    implementation fg.deobf("work.lclpnet.mods:CoreBase:1.6.8")
+    implementation fg.deobf("work.lclpnet.mods:CoreBase:${project.property('corebase_version')}")
 }
 
 jar {

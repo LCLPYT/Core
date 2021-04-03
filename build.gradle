@@ -42,13 +42,13 @@ if(privatePropsFile.exists())
     privatePropsFile.withInputStream { privateProps.load(it) }
 
 version = getVersion()
-group = 'work.lclpnet.core'
+group = 'work.lclpnet.mods'
 archivesBaseName = 'core'
 
 sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 
 minecraft {
-    mappings channel: 'snapshot', version: '20201028-1.16.3'
+    mappings channel: (String) project.property('mapping_channel'), version: (String) project.property('mapping_version')
     
     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
@@ -61,7 +61,12 @@ minecraft {
 
             // Recommended logging level for the console
             property 'forge.logging.console.level', 'debug'
-            
+
+            // Mixin debug
+            property "mixin.debug.export", "true"
+            property "mixin.debug", "true"
+            property "mixin.env.disableRefMap", "true"
+
             args '--mixin', 'mixins.corebase.json'
 
             mods {
@@ -79,7 +84,12 @@ minecraft {
 
             // Recommended logging level for the console
             property 'forge.logging.console.level', 'debug'
-            
+
+            // Mixin debug
+            property "mixin.debug.export", "true"
+            property "mixin.debug", "true"
+            property "mixin.env.disableRefMap", "true"
+
             args '--mixin', 'mixins.corebase.json'
 
             mods {
@@ -109,9 +119,15 @@ minecraft {
     }
 }
 
+repositories {
+    maven {
+        url 'https://repo.lclpnet.work/repository/internal'
+    }
+}
+
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.16.4-35.1.37'
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    minecraft "net.minecraftforge:forge:${project.property('mc_version')}-${project.property('forge_version')}"
+    implementation fg.deobf("work.lclpnet.mods:CoreBase:1.6.8")
 }
 
 jar {

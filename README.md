@@ -17,7 +17,7 @@ repositories {
 Now add the following dependencies:
 ```groovy
 dependencies {
-    implementation fg.deobf("work.lclpnet.mods:CoreBase:VERSION_COREBASE") // required by LCLPMMO
+    implementation fg.deobf("work.lclpnet.mods:CoreBase:VERSION_COREBASE") // required by Core
     implementation fg.deobf("work.lclpnet.mods:Core:VERSION")
 }
 ```

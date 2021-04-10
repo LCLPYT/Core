@@ -27,9 +27,9 @@ public class Config {
 
 	static {
 		ITextComponent joinDefault = new StringTextComponent("Join> ").mergeStyle(TextFormatting.DARK_GRAY)
-				.append(new StringTextComponent("%s").mergeStyle(TextFormatting.GRAY));
+				.appendSibling(new StringTextComponent("%s").mergeStyle(TextFormatting.GRAY));
 		ITextComponent quitDefault = new StringTextComponent("Quit> ").mergeStyle(TextFormatting.DARK_GRAY)
-				.append(new StringTextComponent("%s").mergeStyle(TextFormatting.GRAY));
+				.appendSibling(new StringTextComponent("%s").mergeStyle(TextFormatting.GRAY));
 
 		register.put(KEY_DISABLE_FARMLAND_TRAMPLING, false);
 		register.put(KEY_MESSAGE_JOIN, ITextComponent.Serializer.toJson(joinDefault));

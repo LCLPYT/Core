@@ -10,23 +10,23 @@ import net.minecraftforge.eventbus.api.Cancelable;
  * Called, when a player tries to extinguish a fire.
  */
 @Cancelable
-public class PlayerFireExtinguishEvent extends PlayerEvent{
+public class PlayerFireExtinguishEvent extends PlayerEvent {
 
-	protected BlockPos fireBlock;
-	protected Direction clickedBlockFace;
-	
-	public PlayerFireExtinguishEvent(PlayerEntity player, BlockPos fireBlock, Direction blockFace) {
-		super(player);
-		this.fireBlock = fireBlock;
-		this.clickedBlockFace = blockFace;
-	}
-	
-	public BlockPos getFireBlock() {
-		return fireBlock;
-	}
-	
-	public Direction getClickedBlockFace() {
-		return clickedBlockFace;
-	}
+    protected BlockPos fireBlock;
+    protected Direction clickedBlockFace;
+
+    public PlayerFireExtinguishEvent(PlayerEntity player, BlockPos fireBlock, Direction blockFace) {
+        super(player);
+        this.fireBlock = fireBlock;
+        this.clickedBlockFace = blockFace;
+    }
+
+    public BlockPos getFireBlock() {
+        return fireBlock;
+    }
+
+    public Direction getClickedBlockFace() {
+        return clickedBlockFace;
+    }
 
 }

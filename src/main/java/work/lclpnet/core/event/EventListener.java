@@ -1,17 +1,12 @@
 package work.lclpnet.core.event;
 
 import com.mojang.brigadier.ParseResults;
-
 import net.minecraft.block.BlockState;
 import net.minecraft.block.FireBlock;
 import net.minecraft.command.CommandSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Util;
-import net.minecraft.util.text.IFormattableTextComponent;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.util.text.*;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.CommandEvent;
 import net.minecraftforge.event.ServerChatEvent;
@@ -34,81 +29,81 @@ import work.lclpnet.corebase.util.TextComponentHelper;
 @EventBusSubscriber(modid = Core.MODID, bus = Bus.FORGE)
 public class EventListener {
 
-	@SubscribeEvent
-	public static void onJoin(PlayerJoinEvent e) {
-		PlayerEntity p = e.getPlayer();
-		e.setJoinMessage(Config.getJoinMessageComponent(p.getName().getString()));
-	}
+    @SubscribeEvent
+    public static void onJoin(PlayerJoinEvent e) {
+        PlayerEntity p = e.getPlayer();
+        e.setJoinMessage(Config.getJoinMessageComponent(p.getName().getString()));
+    }
 
-	@SubscribeEvent
-	public static void onQuit(PlayerQuitEvent e) {
-		PlayerEntity p = e.getPlayer();
-		e.setQuitMessage(Config.getQuitMessageComponent(p.getName().getString()));
-	}
+    @SubscribeEvent
+    public static void onQuit(PlayerQuitEvent e) {
+        PlayerEntity p = e.getPlayer();
+        e.setQuitMessage(Config.getQuitMessageComponent(p.getName().getString()));
+    }
 
-	@SubscribeEvent
-	public static void onTrample(FarmlandTrampleEvent e) {
-		if(Config.isFarmlandTramplingDisabled()) e.setCanceled(true);
-	}
+    @SubscribeEvent
+    public static void onTrample(FarmlandTrampleEvent e) {
+        if (Config.isFarmlandTramplingDisabled()) e.setCanceled(true);
+    }
 
-	@SubscribeEvent
-	public static void onHungerChange(FoodLevelChangeEvent e) {
-		if(Config.isNoHunger() && e.getToLevel() < e.getFromLevel()) e.setCanceled(true); 
-	}
-	
-	@SubscribeEvent
-	public static void onChat(ServerChatEvent e) {
-		if(e.getPlayer().hasPermissionLevel(2)) {
-			IFormattableTextComponent itc = ComponentHelper.convertCharStyleToComponentStyle(e.getMessage(), '&');
-			if(TextComponentHelper.hasDeepFormatting(itc)) {
-				boolean modDirectly = false;
-				if(e.getComponent() instanceof TranslationTextComponent) {
-					TranslationTextComponent ttc = (TranslationTextComponent) e.getComponent();
-					if(ttc.formatArgs.length == 2 && ttc.formatArgs[1] instanceof ITextComponent) {
-						modDirectly = true;
-						ttc.formatArgs[1] = itc;
-					}
-				}
+    @SubscribeEvent
+    public static void onHungerChange(FoodLevelChangeEvent e) {
+        if (Config.isNoHunger() && e.getToLevel() < e.getFromLevel()) e.setCanceled(true);
+    }
 
-				if(!modDirectly) e.setComponent(itc);
-			}
-		}
+    @SubscribeEvent
+    public static void onChat(ServerChatEvent e) {
+        if (e.getPlayer().hasPermissionLevel(2)) {
+            IFormattableTextComponent itc = ComponentHelper.convertCharStyleToComponentStyle(e.getMessage(), '&');
+            if (TextComponentHelper.hasDeepFormatting(itc)) {
+                boolean modDirectly = false;
+                if (e.getComponent() instanceof TranslationTextComponent) {
+                    TranslationTextComponent ttc = (TranslationTextComponent) e.getComponent();
+                    if (ttc.formatArgs.length == 2 && ttc.formatArgs[1] instanceof ITextComponent) {
+                        modDirectly = true;
+                        ttc.formatArgs[1] = itc;
+                    }
+                }
 
-		if(Config.isChatSilenced()) {
-			e.setCanceled(true);
-			e.getPlayer().sendMessage(Core.TEXT.message("The chat is silenced right now.", MessageType.ERROR), Util.DUMMY_UUID);
-		}
-	}
+                if (!modDirectly) e.setComponent(itc);
+            }
+        }
 
-	@SubscribeEvent
-	public static void onSignEdit(SignChangeEvent e) {
-		PlayerEntity p = e.getPlayer();
-		if(!p.hasPermissionLevel(2)) return;
+        if (Config.isChatSilenced()) {
+            e.setCanceled(true);
+            e.getPlayer().sendMessage(Core.TEXT.message("The chat is silenced right now.", MessageType.ERROR), Util.DUMMY_UUID);
+        }
+    }
 
-		for (int i = 0; i < e.getLines().size(); i++) 
-			e.setComponentLine(i, ComponentHelper.convertCharStyleToComponentStyle(e.getLine(i), '&', TextFormatting.BLACK));
-	}
+    @SubscribeEvent
+    public static void onSignEdit(SignChangeEvent e) {
+        PlayerEntity p = e.getPlayer();
+        if (!p.hasPermissionLevel(2)) return;
 
-	@SubscribeEvent
-	public static void onFireExtinguish(PlayerInteractEvent.LeftClickBlock e) {
-		PlayerEntity player = e.getPlayer();
+        for (int i = 0; i < e.getLines().size(); i++)
+            e.setComponentLine(i, ComponentHelper.convertCharStyleToComponentStyle(e.getLine(i), '&', TextFormatting.BLACK));
+    }
 
-		BlockState state = player.world.getBlockState(e.getPos());
-		if(!(state.getBlock() instanceof FireBlock)) return;
+    @SubscribeEvent
+    public static void onFireExtinguish(PlayerInteractEvent.LeftClickBlock e) {
+        PlayerEntity player = e.getPlayer();
 
-		PlayerFireExtinguishEvent event = new PlayerFireExtinguishEvent(player, e.getPos(), e.getFace());
-		MinecraftForge.EVENT_BUS.post(event);
-		if(event.isCanceled()) e.setCanceled(true);
-	}
+        BlockState state = player.world.getBlockState(e.getPos());
+        if (!(state.getBlock() instanceof FireBlock)) return;
 
-	@SubscribeEvent
-	public static void onCMDEcho(CommandEvent e) {
-		if(!Config.isCMDEcho()) return;
+        PlayerFireExtinguishEvent event = new PlayerFireExtinguishEvent(player, e.getPos(), e.getFace());
+        MinecraftForge.EVENT_BUS.post(event);
+        if (event.isCanceled()) e.setCanceled(true);
+    }
 
-		ParseResults<CommandSource> parseResults = e.getParseResults();
-		String input = parseResults.getReader().getString();
-		StringTextComponent message = new StringTextComponent("> " + (input.startsWith("/") ? input.substring(1) : input));
-		parseResults.getContext().getSource().sendFeedback(message, false);
-	}
+    @SubscribeEvent
+    public static void onCMDEcho(CommandEvent e) {
+        if (!Config.isCMDEcho()) return;
+
+        ParseResults<CommandSource> parseResults = e.getParseResults();
+        String input = parseResults.getReader().getString();
+        StringTextComponent message = new StringTextComponent("> " + (input.startsWith("/") ? input.substring(1) : input));
+        parseResults.getContext().getSource().sendFeedback(message, false);
+    }
 
 }

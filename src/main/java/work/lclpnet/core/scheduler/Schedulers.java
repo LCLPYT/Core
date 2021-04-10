@@ -5,30 +5,30 @@ import work.lclpnet.corebase.CoreBase;
 
 public class Schedulers {
 
-	public static final SchedulerSystem MAIN_THREAD = new SchedulerSystem(),
-			ALT_THREAD = new AsyncSchedulerSystem();
-	
-	public static void scheduleSync(SchedulerBase sched) {
-		if(sched != null) MAIN_THREAD.enqueue(sched);
-	}
-	
-	public static void scheduleOnAlternativeThread(SchedulerBase sched) {
-		if(sched != null) ALT_THREAD.enqueue(sched);
-	}
-	
-	public static void scheduleAsync(SchedulerBase sched) {
-		if(sched == null) return;
-		
-		new Thread(() -> {
-			while(CoreBase.active) {
-				try {
-					Thread.sleep(50L);
-					if(sched.tick()) return;
-				} catch (InterruptedException e) {
-					return;
-				}
-			}
-		}).start();
-	}
-	
+    public static final SchedulerSystem MAIN_THREAD = new SchedulerSystem(),
+            ALT_THREAD = new AsyncSchedulerSystem();
+
+    public static void scheduleSync(SchedulerBase sched) {
+        if (sched != null) MAIN_THREAD.enqueue(sched);
+    }
+
+    public static void scheduleOnAlternativeThread(SchedulerBase sched) {
+        if (sched != null) ALT_THREAD.enqueue(sched);
+    }
+
+    public static void scheduleAsync(SchedulerBase sched) {
+        if (sched == null) return;
+
+        new Thread(() -> {
+            while (CoreBase.active) {
+                try {
+                    Thread.sleep(50L);
+                    if (sched.tick()) return;
+                } catch (InterruptedException e) {
+                    return;
+                }
+            }
+        }).start();
+    }
+
 }

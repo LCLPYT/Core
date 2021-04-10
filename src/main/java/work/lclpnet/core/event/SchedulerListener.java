@@ -11,11 +11,11 @@ import work.lclpnet.core.scheduler.Schedulers;
 @EventBusSubscriber(bus = Bus.FORGE, modid = Core.MODID)
 public class SchedulerListener {
 
-	@SubscribeEvent
-	public static void onServerTick(ServerTickEvent e) {
-		if(e.phase != Phase.START) return;
+    @SubscribeEvent
+    public static void onServerTick(ServerTickEvent e) {
+        if (e.phase != Phase.START) return;
 
-		Schedulers.MAIN_THREAD.tick();
-	}
-	
+        Schedulers.MAIN_THREAD.tick();
+    }
+
 }

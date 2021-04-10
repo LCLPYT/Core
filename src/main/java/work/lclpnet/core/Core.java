@@ -1,8 +1,5 @@
 package work.lclpnet.core;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -14,6 +11,8 @@ import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.event.server.FMLServerStoppedEvent;
 import net.minecraftforge.fml.event.server.FMLServerStoppingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import work.lclpnet.core.cmd.CoreCommands;
 import work.lclpnet.core.event.EventListener;
 import work.lclpnet.core.event.SchedulerListener;
@@ -22,60 +21,60 @@ import work.lclpnet.corebase.util.ComponentSupplier;
 
 @Mod(Core.MODID)
 public class Core {
-	
-	public static final String MODID = "core";
-	private static final Logger LOGGER = LogManager.getLogger();
-	public static final ComponentSupplier TEXT = new ComponentSupplier("Core");
 
-	public Core() {
-		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
+    public static final String MODID = "core";
+    private static final Logger LOGGER = LogManager.getLogger();
+    public static final ComponentSupplier TEXT = new ComponentSupplier("Core");
 
-		IEventBus bus = MinecraftForge.EVENT_BUS;
-		bus.register(this);
-		bus.register(new EventListener());
-		bus.register(new SchedulerListener());
-	}
+    public Core() {
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
 
-	private void setup(final FMLCommonSetupEvent event) { //preinit
-		LOGGER.info("Core initializing...");
+        IEventBus bus = MinecraftForge.EVENT_BUS;
+        bus.register(this);
+        bus.register(new EventListener());
+        bus.register(new SchedulerListener());
+    }
 
-		Config.load();
+    private void setup(final FMLCommonSetupEvent event) { //preinit
+        LOGGER.info("Core initializing...");
 
-		LOGGER.info("Core initialized.");
-	}
+        Config.load();
 
-	@SubscribeEvent
-	public void onServerStarting(FMLServerStartingEvent e) {
-		LOGGER.info("Core starting...");
-	}
-	
-	@SubscribeEvent
-	public void onRegisterCommands(RegisterCommandsEvent e) {
-		CoreCommands.registerCommands(e.getDispatcher(), e.getEnvironment());
-	}
+        LOGGER.info("Core initialized.");
+    }
 
-	@SubscribeEvent
-	public void onServerStarted(FMLServerStartedEvent e) {
-		LOGGER.info("Core started.");
-	}
-	
-	@SubscribeEvent
-	public void onServerStop(FMLServerStoppingEvent e) {
-		LOGGER.info("Core stopping...");
-	}
-	
-	@SubscribeEvent
-	public void onServerStopped(FMLServerStoppedEvent e) {
-		LOGGER.info("Core stopped.");
-	}
+    @SubscribeEvent
+    public void onServerStarting(FMLServerStartingEvent e) {
+        LOGGER.info("Core starting...");
+    }
 
-	@SubscribeEvent
-	public void onServerReloaded(ServerReloadedEvent e) {
-		LOGGER.info("Core reloading...");
+    @SubscribeEvent
+    public void onRegisterCommands(RegisterCommandsEvent e) {
+        CoreCommands.registerCommands(e.getDispatcher(), e.getEnvironment());
+    }
 
-		Config.load();
+    @SubscribeEvent
+    public void onServerStarted(FMLServerStartedEvent e) {
+        LOGGER.info("Core started.");
+    }
 
-		LOGGER.info("Core reloaded.");
-	}
-	
+    @SubscribeEvent
+    public void onServerStop(FMLServerStoppingEvent e) {
+        LOGGER.info("Core stopping...");
+    }
+
+    @SubscribeEvent
+    public void onServerStopped(FMLServerStoppedEvent e) {
+        LOGGER.info("Core stopped.");
+    }
+
+    @SubscribeEvent
+    public void onServerReloaded(ServerReloadedEvent e) {
+        LOGGER.info("Core reloading...");
+
+        Config.load();
+
+        LOGGER.info("Core reloaded.");
+    }
+
 }

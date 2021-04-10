@@ -1,36 +1,36 @@
-modLoader="javafml"
-loaderVersion="[35,)"
-issueTrackerURL="https://github.com/LCLPYT/Core/issues"
-displayURL="https://github.com/LCLPYT/Core"
-authors="LCLP"
-license="MIT"
+modLoader = "javafml"
+loaderVersion = "[35,)"
+issueTrackerURL = "https://github.com/LCLPYT/Core/issues"
+displayURL = "https://github.com/LCLPYT/Core"
+authors = "LCLP"
+license = "MIT"
 
 [[mods]]
-    modId="core"
-    version="${version}"
-    displayName="Core"
-    updateJSONURL="https://raw.githubusercontent.com/LCLPYT/Core/master/update.json"
-    logoFile="logo.png"
-    credits="LCLPNetwork!"
-    description='''
+modId = "core"
+version = "${version}"
+displayName = "Core"
+updateJSONURL = "https://raw.githubusercontent.com/LCLPYT/Core/master/update.json"
+logoFile = "logo.png"
+credits = "LCLPNetwork!"
+description = '''
     Internal Server mod.
     '''
-    
-    [[dependencies.core]]
-        modId="corebase"
-        mandatory=true
-        versionRange="[1.6,)"
-        ordering="BEFORE"
-        side="SERVER"
-    [[dependencies.core]]
-        modId="forge"
-        mandatory=true
-        versionRange="[35,)"
-        ordering="NONE"
-        side="SERVER"
-    [[dependencies.core]]
-        modId="minecraft"
-        mandatory=true
-        versionRange="[1.16.4]"
-        ordering="NONE"
-        side="BOTH"
+
+[[dependencies.core]]
+modId = "corebase"
+mandatory = true
+versionRange = "[1.6,)"
+ordering = "BEFORE"
+side = "SERVER"
+[[dependencies.core]]
+modId = "forge"
+mandatory = true
+versionRange = "[35,)"
+ordering = "NONE"
+side = "SERVER"
+[[dependencies.core]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.16.4]"
+ordering = "NONE"
+side = "BOTH"

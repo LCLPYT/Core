@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[35,)"
+loaderVersion = "[36,)"
 issueTrackerURL = "https://github.com/LCLPYT/Core/issues"
 displayURL = "https://github.com/LCLPYT/Core"
 authors = "LCLP"
@@ -25,12 +25,12 @@ side = "SERVER"
 [[dependencies.core]]
 modId = "forge"
 mandatory = true
-versionRange = "[35,)"
+versionRange = "[36,)"
 ordering = "NONE"
 side = "SERVER"
 [[dependencies.core]]
 modId = "minecraft"
 mandatory = true
-versionRange = "[1.16.4]"
+versionRange = "[1.16.5]"
 ordering = "NONE"
 side = "BOTH"
